@@ -1,0 +1,45 @@
+print("="*55)
+print("     SMARTCAMPUS UTILITY & ACCESS PASS GENERATOR")
+print("="*55)
+
+c=int(input("Select User Category (1: Student, 2: Faculty/Staff): "))
+if c==1:
+    sub=input("Enter Sub-Category (UG / PG): ").upper()
+    cgpa=float(input("Enter Student CGPA (0.0 - 10.0): "))
+    if cgpa<0 or cgpa>10: print("[ERROR]: CGPA must be between 0.0 and 10.0"); exit()
+    base=500 if sub=="UG" else 350
+    dis=base*.20 if cgpa>=8.5 else base*.10 if cgpa>=7.5 else 0
+else:
+    sub=input("Enter Sub-Category (Resident / Visiting): ").upper()
+    year=int(input("Enter Years of Service: "))
+    if year<0: print("[ERROR]: Years of Service cannot be negative"); exit()
+    base=800 if sub=="RESIDENT" else 1200
+    dis=base*.15 if year>10 else 0
+
+v=int(input("Select Parking Permit (0: None, 2: Two-Wheeler, 4: Four-Wheeler): "))
+park=0 if v==0 else 200 if v==2 else 600 if v==4 else -1
+if park<0: print("[ERROR]: Invalid Parking Option"); exit()
+peak=150 if c==1 and v==4 else 0
+
+u=float(input("Enter Monthly Electricity Consumption (in kWh): "))
+if u<0: print("[ERROR]: Electricity Units cannot be negative"); exit()
+
+if u<=100: eb=u*3+50
+elif u<=300: eb=100*3+(u-100)*5+100
+elif u<=500: eb=100*3+200*5+(u-300)*7.5+150
+else: eb=100*3+200*5+200*7.5+(u-500)*10+250
+
+total=base-dis+park+peak+eb
+
+print("\n"+"="*55)
+print("          CALCULATED INVOICE BREAKDOWN")
+print("="*55)
+print(f"Base Access Pass Fee     : ₹ {base:.2f}")
+print(f"Discount                 : -₹ {dis:.2f}")
+print(f"Parking Fee              : ₹ {park:.2f}")
+print(f"Peak Surcharge           : ₹ {peak:.2f}")
+print(f"Net Pass & Parking Total : ₹ {base-dis+park+peak:.2f}")
+print(f"Electricity Bill ({u:g} kWh) : ₹ {eb:.2f}")
+print("-"*55)
+print(f"TOTAL MONTHLY PAYABLE    : ₹ {total:.2f}")
+print("="*55)
